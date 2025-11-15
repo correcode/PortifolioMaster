@@ -20,7 +20,7 @@ const Header = ({ scrollToSection }) => {
             transition={{ duration: 0.5 }}
             className="flex items-center gap-2 font-orbitron text-xl md:text-2xl font-bold text-cyan-400 tracking-widest logo-text"
           >
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="Linux logo" className="w-8 h-8 filter grayscale" />
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="Linux logo" className="w-8 h-8 filter grayscale" loading="lazy" decoding="async" />
             <span>Developer</span>
           </motion.div>
 
@@ -82,4 +82,4 @@ const Header = ({ scrollToSection }) => {
   );
 };
 
-export default Header;
+export default React.memo(Header);

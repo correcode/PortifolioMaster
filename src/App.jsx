@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { Helmet } from 'react-helmet';
 import { AnimatePresence } from 'framer-motion';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/Header';
-import Home from '@/components/Home';
-import AboutMe from '@/components/AboutMe';
-import Projects from '@/components/Projects';
-import Footer from '@/components/Footer';
-import ResumeModal from '@/components/ResumeModal';
-import Contact from '@/components/Contact';
 import { ThemeProvider } from '@/providers/ThemeProvider';
 import MovingCubesBackground from '@/components/ui/MovingCubesBackground';
 import ParticlesBackground from '@/components/ui/ParticlesBackground';
+
+// Lazy load components
+const Home = lazy(() => import('@/components/Home'));
+const AboutMe = lazy(() => import('@/components/AboutMe'));
+const Projects = lazy(() => import('@/components/Projects'));
+const Footer = lazy(() => import('@/components/Footer'));
+const ResumeModal = lazy(() => import('@/components/ResumeModal'));
+const Contact = lazy(() => import('@/components/Contact'));
+
+// Loading fallback component
+const SectionLoader = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <div className="w-16 h-16 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin"></div>
+  </div>
+);
 
 function AppContent() {
   const [showModal, setShowModal] = useState(false);
@@ -40,20 +49,34 @@ function AppContent() {
       <ParticlesBackground />
       <div className={`min-h-screen font-mono transition-colors duration-500 bg-black text-gray-200`}>
         <div className="absolute inset-0 z-0 opacity-20">
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] bg-repeat" style={{ willChange: 'auto' }}></div>
           <div className="absolute inset-0 bg-gradient-to-br from-black via-blue-900/40 to-black"></div>
         </div>
         <div className="relative z-10">
           <Header scrollToSection={scrollToSection} />
           <main className="overflow-hidden">
-            <Home onDownloadClick={() => setShowModal(true)} />
-            <AboutMe />
-            <Projects />
-            <Contact />
+            <Suspense fallback={<SectionLoader />}>
+              <Home onDownloadClick={() => setShowModal(true)} />
+            </Suspense>
+            <Suspense fallback={<SectionLoader />}>
+              <AboutMe />
+            </Suspense>
+            <Suspense fallback={<SectionLoader />}>
+              <Projects />
+            </Suspense>
+            <Suspense fallback={<SectionLoader />}>
+              <Contact />
+            </Suspense>
           </main>
-          <Footer />
+          <Suspense fallback={null}>
+            <Footer />
+          </Suspense>
           <AnimatePresence>
-            {showModal && <ResumeModal onClose={() => setShowModal(false)} />}
+            {showModal && (
+              <Suspense fallback={null}>
+                <ResumeModal onClose={() => setShowModal(false)} />
+              </Suspense>
+            )}
           </AnimatePresence>
           <Toaster />
         </div>

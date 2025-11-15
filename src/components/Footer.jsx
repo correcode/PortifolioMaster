@@ -74,4 +74,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default React.memo(Footer);

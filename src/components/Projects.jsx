@@ -64,6 +64,8 @@ const Projects = () => {
                   <img 
                     alt={project.imageAlt}
                     className="w-full h-56 object-cover"
+                    loading="lazy"
+                    decoding="async"
                     src={project.image} 
                   />
                 </div>
@@ -77,6 +79,8 @@ const Projects = () => {
                       src={languageIcons[projectLanguages[project.id]]}
                       alt={projectLanguages[project.id] + ' logo'}
                       className="w-7 h-7 ml-2"
+                      loading="lazy"
+                      decoding="async"
                       style={{ filter: 'drop-shadow(0 0 6px #06b6d4)' }}
                     />
                   )}
@@ -101,4 +105,4 @@ const Projects = () => {
   );
 };
 
-export default Projects;
+export default React.memo(Projects);

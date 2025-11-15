@@ -63,9 +63,9 @@ const AboutMe = () => {
                   transition={{ delay: index * 0.15 }}
                   className="group"
                 >
-                  <div className="flex justify-between items-center mb-2">
+                    <div className="flex justify-between items-center mb-2">
                     <div className="flex items-center gap-3">
-                      <img src={tech.logo} alt={tech.name + ' logo'} className="w-8 h-8" />
+                      <img src={tech.logo} alt={tech.name + ' logo'} className="w-8 h-8" loading="lazy" decoding="async" />
                       <span className="font-semibold text-base md:text-lg tracking-wide flex items-center gap-2">
                         {tech.name}
                         <span className="font-orbitron text-cyan-400 text-sm md:text-base ml-2">{tech.level}%</span>
@@ -92,4 +92,4 @@ const AboutMe = () => {
   );
 };
 
-export default AboutMe;
+export default React.memo(AboutMe);

@@ -216,7 +216,36 @@ export default defineConfig({
 				'@babel/traverse',
 				'@babel/generator',
 				'@babel/types'
-			]
+			],
+			output: {
+				manualChunks: {
+					'vendor-react': ['react', 'react-dom'],
+					'vendor-framer': ['framer-motion'],
+					'vendor-radix': [
+						'@radix-ui/react-alert-dialog',
+						'@radix-ui/react-avatar',
+						'@radix-ui/react-checkbox',
+						'@radix-ui/react-dialog',
+						'@radix-ui/react-dropdown-menu',
+						'@radix-ui/react-label',
+						'@radix-ui/react-slider',
+						'@radix-ui/react-slot',
+						'@radix-ui/react-tabs',
+						'@radix-ui/react-toast'
+					],
+					'vendor-icons': ['lucide-react'],
+					'vendor-utils': ['clsx', 'tailwind-merge', 'class-variance-authority']
+				}
+			}
+		},
+		chunkSizeWarningLimit: 1000,
+		minify: 'terser',
+		terserOptions: {
+			compress: {
+				drop_console: true,
+				drop_debugger: true,
+				pure_funcs: ['console.log', 'console.info']
+			}
 		}
 	}
 });

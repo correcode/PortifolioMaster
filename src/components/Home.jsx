@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, Github, Linkedin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/providers/ThemeProvider';
 import TypingText from '@/components/ui/TypingText';
-import { useState } from 'react';
-import { useEffect, useRef } from 'react';
 
 const Home = ({ onDownloadClick }) => {
   const { isDarkMode } = useTheme();
@@ -105,6 +103,8 @@ const Home = ({ onDownloadClick }) => {
               <img 
                 alt="Alisson Corrêa - Desenvolvedor Full Stack"
                 className={`relative w-64 h-64 md:w-80 md:h-80 rounded-full object-cover border-4 ${imgError ? 'border-red-500' : 'border-blue-500/50'} shadow-2xl shadow-blue-500/20`}
+                loading="lazy"
+                decoding="async"
                 src="/foto2.jpg"
                 onError={() => setImgError(true)}
               />
@@ -125,14 +125,18 @@ const Home = ({ onDownloadClick }) => {
 };
 
 // RadarDots component: renders several animated dots orbiting a center point
-const RadarDots = ({ count = 12, radius = 160 }) => {
+const RadarDots = React.memo(({ count = 12, radius = 160 }) => {
+  // Detect mobile and reduce dots
+  const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+  const dotCount = isMobile ? 8 : count;
+  
   // Gera um array de ângulos igualmente espaçados
-  const dots = Array.from({ length: count });
+  const dots = Array.from({ length: dotCount });
   return (
     <>
       {dots.map((_, i) => {
         // Cada bolinha tem um ângulo inicial diferente
-        const angle = (i / count) * 2 * Math.PI;
+        const angle = (i / dotCount) * 2 * Math.PI;
         // Cada bolinha pode ter uma velocidade diferente
         const duration = 4 + (i % 3) * 1.2;
         return (
@@ -177,6 +181,6 @@ const RadarDots = ({ count = 12, radius = 160 }) => {
       })}
     </>
   );
-};
+});
 
-export default Home;
+export default React.memo(Home);

@@ -24,4 +24,4 @@ const TypingText = ({ text, className }) => {
   );
 };
 
-export default TypingText; 
+export default React.memo(TypingText); 
